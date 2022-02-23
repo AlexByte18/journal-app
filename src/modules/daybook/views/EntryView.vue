@@ -1,7 +1,7 @@
 <template>
     <div class="entry-title d-flex justify-content-between p-2">
         <div>
-            <span class="">15</span>
+            <span class="">{{ day }}</span>
             <span class="">Julio</span>
             <span class="">2021, jueves</span>
         </div>
@@ -19,7 +19,7 @@
     <hr>
 
     <div class="d-flex flex-column px-3 h-75">
-        <textarea placeholder="Que sucedio hoy?"></textarea>
+        <textarea placeholder="Que sucedio hoy?" v-model="entry.text"></textarea>
     </div>
 
     <Fab icon="fa-save"/>
@@ -31,6 +31,7 @@
 import { defineAsyncComponent } from '@vue/runtime-core'
 
 import { mapGetters } from 'vuex'
+import getDayMonthYear from '../helpers/getDateMonthYear'
 
 export default {
 
@@ -47,6 +48,10 @@ export default {
         loadEntry() {   
             const entry = this.getEntryById( this.id )
             console.log(entry)
+
+            if(!entry) this.$router.push({ name: 'no-entry'})
+
+            this.entry = entry
         }
     },
     created() {
@@ -54,8 +59,26 @@ export default {
         this.loadEntry()
     },
     computed: {
-        ...mapGetters('journal', ['getEntryById'])
+        ...mapGetters('journal', ['getEntryById']),
+        day() {
+            const { day } = getDayMonthYear( this.entry.date )
+            return day
+        },
+        month() {
+            const { month } = getDayMonthYear( this.entry.date )
+            return month
+        },
+        yearDay() {
+            const { yearDay } = getDayMonthYear( this.entry.date )
+            return yearDay
+        },
+    },
+    data() {
+        return {
+            entry: null
+        }
     }
+
 }
 </script>
 
