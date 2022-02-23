@@ -1,6 +1,11 @@
 
+export const getEntriesByTerm =  ( state ) => ( term = '' ) => {
 
-// 
-// export const myAction =  ( state) => {
+    if(term.length === 0) return state.entries
+
+    return state.entries.filter( entry => entry.text.toLowerCase().includes( term.toLocaleLowerCase()))
+}
+
+export const getEntriesById =  ( /*state*/ ) => {
     // return state
-    // }
+}
