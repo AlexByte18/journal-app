@@ -1,30 +1,35 @@
 <template>
-    <div class="entry-title d-flex justify-content-between p-2">
-        <div>
-            <span class="">{{ day }}</span>
-            <span class="">Julio</span>
-            <span class="">2021, jueves</span>
+
+    <template v-if="entry">
+
+    
+        <div class="entry-title d-flex justify-content-between p-2">
+            <div>
+                <span class="">{{ day }}</span>
+                <span class="">Julio</span>
+                <span class="">2021, jueves</span>
+            </div>
+
+            <div>
+                <button  class="btn btn-danger mx-2">Borrar
+                    <i class="fa fa-trash-alt"></i>
+                </button>
+                <button  class="btn btn-primary mx-2">Subir Foto
+                    <i class="fa fa-upload"></i>
+                </button>
+            </div>
         </div>
 
-        <div>
-            <button  class="btn btn-danger mx-2">Borrar
-                <i class="fa fa-trash-alt"></i>
-            </button>
-            <button  class="btn btn-primary mx-2">Subir Foto
-                <i class="fa fa-upload"></i>
-            </button>
+        <hr>
+
+        <div class="d-flex flex-column px-3 h-75">
+            <textarea placeholder="Que sucedio hoy?" v-model="entry.text"></textarea>
         </div>
-    </div>
 
-    <hr>
+        <Fab icon="fa-save"/>
 
-    <div class="d-flex flex-column px-3 h-75">
-        <textarea placeholder="Que sucedio hoy?" v-model="entry.text"></textarea>
-    </div>
-
-    <Fab icon="fa-save"/>
-
-    <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" alt="entry-picture" class="img-tumbail">
+        <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg" alt="entry-picture" class="img-tumbail">
+    </template>
 </template>
 
 <script>
@@ -49,7 +54,7 @@ export default {
             const entry = this.getEntryById( this.id )
             console.log(entry)
 
-            if(!entry) this.$router.push({ name: 'no-entry'})
+            if(!entry) return this.$router.push({ name: 'no-entry'})
 
             this.entry = entry
         }
@@ -57,6 +62,11 @@ export default {
     created() {
         // console.log(this.id)
         this.loadEntry()
+    },
+    watch: {
+        id(){
+
+        }
     },
     computed: {
         ...mapGetters('journal', ['getEntryById']),
